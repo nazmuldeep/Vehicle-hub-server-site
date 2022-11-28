@@ -17,7 +17,7 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 
 
 app.get('/', (req, res) => {
-    res.send('welcome to Bike-Resale server')
+    res.send('welcome to vehicle hub  server')
 });
 app.listen(port, () => {
     console.log(`server running on port ${port}`);
