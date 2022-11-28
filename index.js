@@ -8,3 +8,17 @@ require('dotenv').config()
 app.use(cors());
 app.use(express.json())
 
+
+
+
+const uri = `mongodb+srv://vehiclehub:bpsFgEVQ0b5CCtlW@cluster0.ivnriwf.mongodb.net/?retryWrites=true&w=majority`;
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
+
+
+
+app.get('/', (req, res) => {
+    res.send('welcome to Bike-Resale server')
+});
+app.listen(port, () => {
+    console.log(`server running on port ${port}`);
+})
