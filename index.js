@@ -24,6 +24,73 @@ async function run() {
             const result = await UserCollection.insertOne(user)
             res.send(result);
         })
+        app.get('/users/:id', async (req, res) => {
+            const id = req.params.id;
+            const serQuery = { role: id }
+            const productCursor = UserCollection.find(serQuery)
+            const product = await productCursor.toArray()
+            res.send(product)
+        })
+        app.delete('/usersDelete/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) }
+            const result = await UserCollection.deleteOne(query)
+            res.send(result)
+        });
+        app.get('/myProfile/:id', async (req, res) => {
+            const id = req.params.id;
+            const serQuery = { email: id }
+            const productCursor = UserCollection.find(serQuery)
+            const product = await productCursor.toArray()
+            res.send(product)
+        })
+        const CategoryCollection = db.collection('Category');
+        app.post('/category', async (req, res) => {
+            const category = req.body;
+            const result = await CategoryCollection.insertOne(category)
+            res.send(result);
+        })
+        app.get('/category', async (req, res) => {
+            const serQuery = {}
+            const categoryCursor = CategoryCollection.find(serQuery)
+            const category = await categoryCursor.toArray()
+            res.send(category)
+        })
+        const ProductCollection = db.collection('Products');
+        app.post('/product', async (req, res) => {
+            const product = req.body;
+            const result = await ProductCollection.insertOne(product)
+            res.send(result);
+        })
+        app.get('/product', async (req, res) => {
+            const serQuery = {}
+            const categoryCursor = ProductCollection.find(serQuery)
+            const category = await categoryCursor.toArray()
+            res.send(category)
+        })
+        app.get('/products/:id', async (req, res) => {
+            const id = req.params.id;
+            const serQuery = { Status: id }
+            const productCursor = ProductCollection.find(serQuery)
+            const product = await productCursor.toArray()
+            res.send(product)
+        })
+        app.get('/product/:id', async (req, res) => {
+            const id = req.params.id;
+            const serQuery = { category: id }
+            const productCursor = ProductCollection.find(serQuery)
+            const product = await productCursor.toArray()
+            res.send(product)
+        })
+        app.get('/myProduct/:id', async (req, res) => {
+            const id = req.params.id;
+            const serQuery = { email: id }
+            const productCursor = ProductCollection.find(serQuery)
+            const product = await productCursor.toArray()
+            res.send(product)
+        })
+
+        run().catch(error => console.log(error));
 
 
         app.get('/', (req, res) => {
