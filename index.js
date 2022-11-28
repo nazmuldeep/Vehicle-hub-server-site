@@ -89,6 +89,20 @@ async function run() {
             const product = await productCursor.toArray()
             res.send(product)
         })
+        app.put('/updateProduct/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) }
+            const reviews = req.body;
+            console.log(reviews);
+            const option = { upsert: true }
+            const updateReview = {
+                $set: {
+                    Status: reviews.Status,
+                }
+            }
+            const result = await ProductCollection.updateOne(filter, updateReview, option)
+            res.send(result)
+        })
 
         run().catch(error => console.log(error));
 
