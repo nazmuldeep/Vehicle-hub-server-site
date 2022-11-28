@@ -109,13 +109,62 @@ async function run() {
             const result = await ProductCollection.deleteOne(query)
             res.send(result)
         });
-
-        run().catch(error => console.log(error));
-
-
-        app.get('/', (req, res) => {
-            res.send('welcome to vehicle hub  server')
-        });
-        app.listen(port, () => {
-            console.log(`server running on port ${port}`);
+        // booking 
+        const bookingCollection = db.collection('Booking');
+        app.post('/booking', async (req, res) => {
+            const product = req.body;
+            const result = await bookingCollection.insertOne(product)
+            res.send(result);
         })
+        app.delete('/bookingDelete/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) }
+            const result = await bookingCollection.deleteOne(query)
+            res.send(result)
+        });
+        app.get('/myBooking/:id', async (req, res) => {
+            const id = req.params.id;
+            const serQuery = { byerEmail: id }
+            const productCursor = bookingCollection.find(serQuery)
+            const product = await productCursor.toArray()
+            res.send(product)
+        })
+        app.get('/myBuyers/:id', async (req, res) => {
+            const id = req.params.id;
+            const serQuery = { sellerEmail: id }
+            const productCursor = bookingCollection.find(serQuery)
+            const product = await productCursor.toArray()
+            res.send(product)
+        })
+        app.delete('/myBuyers/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) }
+            const result = await bookingCollection.deleteOne(query)
+            res.send(result)
+        });
+        const reportCollection = db.collection('Report');
+        app.post('/report', async (req, res) => {
+            const report = req.body;
+            const result = await reportCollection.insertOne(report)
+            res.send(result);
+        })
+        app.get('/reports', async (req, res) => {
+            const serQuery = {}
+            const reportCursor = reportCollection.find(serQuery)
+            const report = await reportCursor.toArray()
+            res.send(report)
+        })
+
+    } finally {
+
+    }
+}
+run().catch(error => console.log(error));
+
+
+app.get('/', (req, res) => {
+    res.send('welcome to vehicle hub  server')
+});
+app.listen(port, () => {
+    console.log(`server running on port ${port}`);
+})
